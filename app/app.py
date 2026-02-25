@@ -113,6 +113,8 @@ def _stream_output(prefix: str, stream: io.TextIOBase) -> None:
         sys.stdout.write(f"{prefix} {line}")
     stream.close()
 
+# WSGI entrypoint for Gunicorn: "gunicorn app:app"
+app = create_app()
 
 if __name__ == "__main__":
     try:
