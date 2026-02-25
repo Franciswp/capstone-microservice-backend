@@ -1,9 +1,10 @@
 # app/schemas.py
 from datetime import datetime
 from typing import List, Optional
-from pydantic import BaseModel, Field, validator
 
 from bson import ObjectId
+from pydantic import BaseModel, Field
+from pydantic import ConfigDict
 
 # Small ObjectId wrapper for Pydantic
 class PyObjectId(str):
@@ -39,12 +40,12 @@ class UserOut(BaseModel):
     role: str
     created_at: Optional[datetime]
 
-
-
-    class Config:
-        orm_mode = True
-        allow_population_by_field_name = True
-        json_encoders = {ObjectId: str}
+    # Pydantic v2 config
+    model_config = ConfigDict(
+        from_attributes=True,            # was orm_mode
+        validate_by_name=True,           # was allow_population_by_field_name
+        json_encoders={ObjectId: str},   # same meaning as before
+    )
 
 
 # Booking create schema
